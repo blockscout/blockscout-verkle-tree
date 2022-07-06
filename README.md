@@ -2,7 +2,7 @@
 Module for visualizing Verkle tree proofs
 ## Theory
 Verkle trie is quite similar to **Modified Merkle Patricia Trie**. To understand how this data structure works, let's look at each modification separately.
-### Merkle Tree
+#### Merkle Tree
 ![Hash_Tree](https://user-images.githubusercontent.com/70902141/176688119-ed80ef9e-1c73-4a41-bb61-fb44f5ac7622.png)
 
 The binary tree that is used like **hash function** for any split data.  
@@ -17,7 +17,7 @@ But there is the main *Merkle tree traversal problem*: it is too expensive to st
 ### Trie
 This is k-ary search tree. Also called *prefix-tree* for strings.
 ![539-5390088_trie-example-hd-png-download](https://user-images.githubusercontent.com/70902141/176702178-f4668836-f14c-4bd5-a809-5ddcf14ffd7b.png)  
-*Example for set of words: "A", "to", "tea", "ted", "ten", "i", "in", and "inn".*  
+*Example for set of words: "A", "to", "tea", "ted", "ten", "i", "in", and "inn".inside *  
 
 Sample of *Node* struct:
 ```
@@ -30,10 +30,16 @@ class className {
 ```
 Algorithm complexity: *O(N<sup>2</sup>)* : create; *O(m)* : find, where m - lenght of word;
 
-### Patricia trie
+#### Patricia trie
 ![An_example_of_how_to_find_a_string_in_a_Patricia_trie](https://user-images.githubusercontent.com/70902141/176709476-35e62471-0b8a-43c0-923a-120e856417c9.png)  
 This is a prefix tree in which prefixes are binary — that is, each key node stores information about one bit. In Ethereum the transition takes place according to the heximal number system (wich called nibble).
 
 ### Modified Merkle Patricia Trie
-
-
+Here it is. The main features that distinguish Ethereum from Bitcoin are implemented by realization of ***this data structure***.  
+Modified Merkle Patricia Trie (MPT) provides opportunities to store account statuses, smart-contracts and almost anything dynamically stored data ***inside the blockchain***.  
+There are a lot of optimizations which currently Ethereum use, I'll keep it out in context of this README.  
+You can find Ethereum docs about MPT [here](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie).
+![YZGxe](https://user-images.githubusercontent.com/70902141/177598321-aa02c6bf-93e6-488e-aadb-0cd8826e3ded.png)  
+In short, we combine everything that we talked about above.  
+We dynamically store the key-value, and verify their authenticity with a digital signature at the root (as Merkle Tree).  
+Asymptotics of methods like in prefix tree. There are a few difficult parts in realization, but not critical ([article with realization](https://habr.com/ru/post/446558/)).
