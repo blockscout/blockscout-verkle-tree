@@ -73,6 +73,12 @@ There are two the easiest polynomial commitment schemes: [KZG commitmens](https:
 
 Using these schemes already have a big win, but the math we use here provide us opportunity to **merge** different proofs (like on the last picture).
 
+**Time Complexities** (from [this](https://math.mit.edu/research/highschool/primes/materials/2018/Kuszmaul.pdf) papper)  
+
+![image](https://user-images.githubusercontent.com/70902141/178260990-86724a74-61d1-4c49-9e0d-817b208ed08f.png)
+  
+k here - is `width`. Because *Verkle Tree* doesn't have multiplier `width - 1` while proof (we don't have to get sisters), **proof** will be much better.
+  
 #### Coding
 
 Let's construct the methods and classes, that we will needed.
