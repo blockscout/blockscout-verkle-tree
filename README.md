@@ -73,12 +73,29 @@ There are two the easiest polynomial commitment schemes: [KZG commitmens](https:
 
 Using these schemes already have a big win, but the math we use here provide us opportunity to **merge** different proofs (like on the last picture).
 
-**Time Complexities** (from [this](https://math.mit.edu/research/highschool/primes/materials/2018/Kuszmaul.pdf) papper)  
+**Time Complexities** (from [this](https://math.mit.edu/research/highschool/primes/materials/2018/Kuszmaul.pdf) paper)  
 
 ![image](https://user-images.githubusercontent.com/70902141/178260990-86724a74-61d1-4c49-9e0d-817b208ed08f.png)
   
 k here - is `width`. Because *Verkle Tree* doesn't have multiplier `width - 1` while proof (we don't have to get sisters), **proof** will be much better.
   
-#### Coding
+#### Usefull links
+  
+I consider there's no point in implementation of *verkle tree* (i found it).  
+So, if someone comes back here in the future, I'll leave **a bunch** of links here, which helped me a lot.
 
-Let's construct the methods and classes, that we will needed.
+| links | description |
+| --- | --- |
+| [crate-crypto/rust-verkle](https://github.com/crate-crypto/rust-verkle) | **Implementation** of verkle tree in *rust* (special crate) |
+| [gballet/verkle-block-sample](https://github.com/gballet/verkle-block-sample) | **Example** of verklee proof in rust |
+| [condrieu](https://condrieu.ethdevops.io/) | **Testnet** with usage of verkle tree |
+| [gballet/go-verkle](https://github.com/gballet/go-verkle) | **Test client** of verkle tree in go |
+| [Ethereum Meeting](https://www.youtube.com/watch?v=1hTscLYsaIg&t=1167s&ab_channel=EthereumCatHerders) | recording a meeting, where Vitalik talks about verkle tree (beginning) |
+| [Guillaume Ballet on *ETH PRAGUE 2020*](https://www.youtube.com/watch?v=4fL7hi8SZMs&ab_channel=ParallelPolis) | Speech by Guillaume Ballet about transition to verkle-networks |
+| [eth research](https://ethresear.ch/t/a-minimum-viable-kzg-polynomial-commitment-scheme-implementation/7675) | **KZG commitments** research |
+| [MIT paper](https://math.mit.edu/research/highschool/primes/materials/2018/Kuszmaul.pdf) | **Intro-paper** to verkle trees (beginning) |
+| [Vitalik's paper](https://vitalik.ca/general/2021/06/18/verkle.html) | **Post** a bit harder than previous (beginning) |
+| [verkle-trie-for-eth1](https://dankradfeist.de/ethereum/2021/06/18/verkle-trie-for-eth1.html) | **Post** to read (beginning) |
+| [KZG commitments](https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html) | **Post** about Kate commitments (some math) |
+| [Math](https://vitalik.ca/general/2017/01/14/exploring_ecp.html) | Elliptic Curve usage |
+
