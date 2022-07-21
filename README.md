@@ -98,4 +98,4 @@ So, if someone comes back here in the future, I'll leave **a bunch** of links he
 | [verkle-trie-for-eth1](https://dankradfeist.de/ethereum/2021/06/18/verkle-trie-for-eth1.html) | **Post** to read (beginning) |
 | [KZG commitments](https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html) | **Post** about Kate commitments (some math) |
 | [Math](https://vitalik.ca/general/2017/01/14/exploring_ecp.html) | Elliptic Curve usage |
-
+| [@vbuterin/verkle_tree_eip](https://notes.ethereum.org/@vbuterin/verkle_tree_eip) | **Post** about work and influence of verkle tree |
