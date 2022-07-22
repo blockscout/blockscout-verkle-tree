@@ -1,5 +1,5 @@
 [package]
-name = "blockscout-verkle-tree"
+name = "verkle_tree_img"
 version = "0.1.0"
 edition = "2021"
 repository = "https://github.com/blockscout/blockscout-verkle-tree"
@@ -12,3 +12,5 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 env_logger = "0.9"
 log = "0.4"
 config = "0.13"
+serde = { version = "1", features = ["derive"] }
+clap = { version = "3", features = ["derive"] }
