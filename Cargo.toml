@@ -8,9 +8,14 @@ repository = "https://github.com/blockscout/blockscout-verkle-tree"
 
 [dependencies]
 actix-web = "4"
-clap = { version = "3", features = ["derive"] }
+anyhow = "1.0"
+clap = { version = "3.1.6", features = ["derive"] }
 config = "0.13"
 env_logger = "0.9"
+hex = "0.4.3"
 log = "0.4"
+reqwest = { version = "0.11", features = ["json", "blocking"] }
+rlp = "^0.5.1"
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+verkle-trie = { git = "https://github.com/crate-crypto/rust-verkle", rev = "11149e0a" }
