@@ -2524,12 +2524,12 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 [[package]]
 name = "verkle-db"
 version = "0.1.0"
-source = "git+https://github.com/crate-crypto/rust-verkle?rev=11149e0a#11149e0a2a457d7c2b57ec0c4c01678d287f42ce"
+source = "git+https://github.com/steph-mipt/rust-verkle?rev=8f1c197#8f1c1970c2c32f2a71ce01bcc87eedd2146291f8"
 
 [[package]]
 name = "verkle-trie"
 version = "0.1.0"
-source = "git+https://github.com/crate-crypto/rust-verkle?rev=11149e0a#11149e0a2a457d7c2b57ec0c4c01678d287f42ce"
+source = "git+https://github.com/steph-mipt/rust-verkle?rev=8f1c197#8f1c1970c2c32f2a71ce01bcc87eedd2146291f8"
 dependencies = [
  "ark-ec",
  "ark-ff",
@@ -2553,6 +2553,7 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "anyhow",
+ "ark-serialize",
  "clap 3.2.14",
  "config",
  "env_logger",
