@@ -20,4 +20,5 @@ rlp = "^0.5.1"
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 # verkle-trie = { git = "https://github.com/tanishqjasoria/rust-verkle" , branch = "stable" }
-verkle-trie = { git = "https://github.com/steph-mipt/rust-verkle", rev = "8f1c197" }
+verkle-trie = { git = "https://github.com/steph-mipt/rust-verkle", branch = "stable" }
+dot = "0.1.4"

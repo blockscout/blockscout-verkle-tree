@@ -15,7 +15,7 @@ use ark_serialize::CanonicalDeserialize;
 #[allow(dead_code)]
 pub struct VerkleHeader {
     parent_hash: Vec<u8>,
-    storage_root: Vec<u8>,
+    pub storage_root: Vec<u8>,
     number: Vec<u8>,
     proof: proof::Proof,
     keyvals: keyvals::KeyVals,
@@ -124,7 +124,8 @@ pub fn verification(block: VerkleBlock, parent_root: String) -> Result<verkle_tr
     }
 }
 
-pub async fn save_rlp(rlp: String, num: u64) -> Result<(), std::io::Error>{
+#[allow(dead_code)]
+pub async fn save_rlp(rlp: String, num: u64) -> Result<(), std::io::Error> {
     use std::fs::File;
     use std::io::prelude::*;
 
