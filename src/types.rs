@@ -12,7 +12,7 @@ pub struct VerkleResp {#[allow(dead_code)]
 
 #[allow(dead_code)]
 #[derive(Deserialize, Debug)]
-pub struct ResponseTest {
+pub struct RPCResp {
     jsonrpc: String,
     #[serde(alias = "result", alias = "error")]
     pub result: String,
