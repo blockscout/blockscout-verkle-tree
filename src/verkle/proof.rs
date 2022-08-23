@@ -1,3 +1,4 @@
+// This part of code was taken and modified from
 // https://github.com/gballet/verkle-block-sample
 
 use rlp::{Decodable, DecoderError, Rlp};

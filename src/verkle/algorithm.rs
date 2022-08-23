@@ -10,7 +10,9 @@ use verkle_trie::EdwardsProjective;
 
 use ark_serialize::CanonicalDeserialize;
 
+// This part of code was taken and modified from
 // https://github.com/gballet/verkle-block-sample
+
 #[allow(dead_code)]
 pub struct VerkleHeader {
     parent_hash: Vec<u8>,
