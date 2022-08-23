@@ -19,7 +19,7 @@ pub struct VerkleHeader {
     pub storage_root: Vec<u8>,
     number: Vec<u8>,
     proof: Proof,
-    keyvals: KeyVals,
+    pub keyvals: KeyVals,
 }
 
 impl Decodable for VerkleHeader {
@@ -63,6 +63,8 @@ pub fn decode_block(rlp: String) -> Result<VerkleBlock, anyhow::Error> {
     Ok(block)
 }
 
+// change to trace::
+#[allow(dead_code)]
 pub fn print_block_info(block: &VerkleBlock) {
     println!(
             "Block info:\n- parent hash: {}\n- storage root: {}\n- block number: {}\n",
@@ -109,14 +111,16 @@ pub fn verification(block: VerkleBlock, parent_root: String) -> Result<verkle_tr
 
     match checked {
         true => {
-            println!("Good verification");
+            // change to trace::
+            log::info!("Good verification");
             match info {
                 Some(val) => Ok(val),
                 None => Err(anyhow::anyhow!("UpdateHint is none"))
             }
         },
         false => {
-            println!("Bad verification");
+            // change to trace::
+            log::error!("Bad verification");
             Err(anyhow::anyhow!("Verification didn't work out"))
         }
     }

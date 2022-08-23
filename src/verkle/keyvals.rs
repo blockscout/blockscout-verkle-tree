@@ -3,6 +3,7 @@
 
 use rlp::{Decodable, DecoderError, Rlp};
 use std::convert::TryInto;
+use std::clone::Clone;
 
 #[derive(Debug)]
 pub struct Tuple(Vec<u8>, Vec<u8>);
@@ -39,6 +40,7 @@ impl Into<([u8; 32], Option<[u8; 32]>)> for Tuple {
     }
 }
 
+#[derive(Clone)]
 pub struct KeyVals {
     pub keys: Vec<[u8; 32]>,
     pub values: Vec<Option<[u8; 32]>>,

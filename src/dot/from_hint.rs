@@ -10,11 +10,11 @@ struct Graph {
     edges: Vec<(usize,usize,u8)>
 }
 
-pub fn to_dot(uh: &UpdateHint, filename: &str) -> Result<(), anyhow::Error> {
+pub fn to_dot(uh: &UpdateHint, keyvals: &crate::verkle::KeyVals, filename: &str) -> Result<(), anyhow::Error> {
     use std::fs::File;
     let mut f = File::create(filename)?;
 
-    render_to(&mut f, uh)
+    render_to(&mut f, uh, keyvals)
 }
 
 fn common_prefix(v1: &[u8], v2: &[u8]) -> usize {
@@ -22,7 +22,9 @@ fn common_prefix(v1: &[u8], v2: &[u8]) -> usize {
 }
 
 // We are transforming sorted Vec<paths, commitments> to the prefix-tree (dot)
-pub fn render_to<W: Write>(output: &mut W, data: &UpdateHint) -> Result<(), anyhow::Error> {
+pub fn render_to<W: Write>(
+                        output: &mut W, data: &UpdateHint,
+                        keyvals: &crate::verkle::KeyVals)-> Result<(), anyhow::Error> {
     let mut nodes = vec![];
     let mut previous_items = Vec::<(Vec::<u8>, String)>::new();
     let mut edges = vec![];
@@ -71,19 +73,38 @@ pub fn render_to<W: Write>(output: &mut W, data: &UpdateHint) -> Result<(), anyh
                         .position(|x| x.0 == item.1);
                     
                     match index_element {
-                        Some(val) => nodes[val].1 = Some(item.1.clone()),
+                        Some(val) => nodes[val].1 = Some(hex::encode(comm)),
                         // we can't get here
                         None => {
                             log::error!("How could you get here?");
                             continue;
+                        }
+                    };
+
+                    let prefix = comm.clone().to_vec();
+
+                    // we need extention and len must be len 31
+                    // iterate throwght keys and get them
+                    for (indx, key) in keyvals.keys.iter().enumerate() {
+                        if keyvals.values[indx].is_none() {
+                            continue;
+                        }
+
+                        let common = common_prefix(&prefix, key);
+
+                        if common == 31 {
+                            // create new node in .dot
+                            println!("value has found");
+                        }
                     }
-                    }
+
                 }
             }
         }
     }
 
     // go through all the keys and write them to the tree if there are exit nodes!
+    // can we iterate better?
 
     let graph = Graph { nodes, edges };
 
@@ -107,7 +128,7 @@ impl<'a> dot::Labeller<'a, Node, Edge<'a>> for Graph {
         let node = self.nodes[*n].clone();
         let comm = node.0;
         let ext = match node.1 {
-            Some(val) => format!("\next: {}",val),
+            Some(val) => format!("\next: 0x{}",val),
             None => "".to_owned()
         };
 

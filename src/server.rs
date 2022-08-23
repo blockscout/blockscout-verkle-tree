@@ -1,4 +1,4 @@
-use crate::verkle::{get_rlp, decode_block, print_block_info, verification};
+use crate::verkle::{get_rlp, decode_block, verification};
 use crate::dot::to_dot;
 use actix_web::{web::{self, Json}, App, HttpServer};
 use crate::types::{VerkleReq, VerkleResp};
@@ -10,7 +10,7 @@ async fn get_block_info(data: Json<VerkleReq>) -> Result<Json<VerkleResp>, crate
     let block = decode_block(block_rlp.clone())?;
 
     // save_rlp(block_rlp.clone(), block_number).await?;
-    print_block_info(&block);
+    // print_block_info(&block);
 
     if block_number < 2 {
         return Ok(Json(VerkleResp { block_rlp: "incorrect block number".to_owned() }));
@@ -20,9 +20,10 @@ async fn get_block_info(data: Json<VerkleReq>) -> Result<Json<VerkleResp>, crate
     let previous_block = decode_block(previous_block_rlp)?;
 
     let parent_root = hex::encode(previous_block.header.storage_root);
+    let keyvals = block.header.keyvals.clone();
 
     match verification(block, parent_root) {
-        Ok(val) => match to_dot(&val, "example.dot") {
+        Ok(val) => match to_dot(&val, &keyvals, "example.dot") {
                        Ok(()) => Ok(Json(VerkleResp { block_rlp })),
                        Err(err) => Err(err.into())
                    },
