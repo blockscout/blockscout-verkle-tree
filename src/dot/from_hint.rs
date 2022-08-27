@@ -93,8 +93,15 @@ pub fn render_to<W: Write>(
                         let common = common_prefix(&prefix, key);
 
                         if common == 31 {
+                            let mut value = hex::encode(keyvals.values[indx].unwrap());
+                            if value == "0000000000000000000000000000000000000000000000000000000000000000" {
+                                value = "00..".to_owned();
+                            }
+
+                            nodes.push((format!("0x{value}"), None));
+                            edges.push((index_element.unwrap() + 1_usize, nodes.len() - 1, key[31]));
                             // create new node in .dot
-                            println!("value has found");
+                            // println!("value has found");
                         }
                     }
 
@@ -102,9 +109,6 @@ pub fn render_to<W: Write>(
             }
         }
     }
-
-    // go through all the keys and write them to the tree if there are exit nodes!
-    // can we iterate better?
 
     let graph = Graph { nodes, edges };
 

@@ -3,6 +3,7 @@ use crate::dot::to_dot;
 use actix_web::{web::{self, Json}, App, HttpServer};
 use crate::types::{VerkleReq, VerkleResp};
 use crate::Config;
+use tokio::process::Command;
 
 async fn get_block_info(data: Json<VerkleReq>) -> Result<Json<VerkleResp>, crate::error::Error> {
     let block_number = data.into_inner().block_number;
@@ -13,7 +14,7 @@ async fn get_block_info(data: Json<VerkleReq>) -> Result<Json<VerkleResp>, crate
     // print_block_info(&block);
 
     if block_number < 2 {
-        return Ok(Json(VerkleResp { block_rlp: "incorrect block number".to_owned() }));
+        return Ok(Json(VerkleResp { image: "incorrect block number".to_owned() }));
     }
 
     let previous_block_rlp = get_rlp(block_number - 1).await?;
@@ -24,12 +25,28 @@ async fn get_block_info(data: Json<VerkleReq>) -> Result<Json<VerkleResp>, crate
 
     match verification(block, parent_root) {
         Ok(val) => match to_dot(&val, &keyvals, "example.dot") {
-                       Ok(()) => Ok(Json(VerkleResp { block_rlp })),
-                       Err(err) => Err(err.into())
-                   },
+                        Ok(()) => {
+                            let mut child = Command::new("dot")
+                                .arg("-Tpng")
+                                .arg("example.dot")
+                                .arg("-o")
+                                .arg("example.png")
+                                .spawn()
+                                .expect("failed to spawn");
+                    
+                            // Await until the command completes
+                            let _status = child.wait().await?;
+                            
+                            // sending an image
+                            let base64 = image_base64::to_base64("example.png"); 
+
+                            Ok(Json(VerkleResp { image: base64 }))
+                        },
+                        Err(err) => Err(err.into())
+                    },
         Err(err) => {
             log::error!("Error : {}", err);
-            Ok(Json(VerkleResp { block_rlp: "error with verification".to_owned() }))
+            Ok(Json(VerkleResp { image: "error with verification".to_owned() }))
         }
     }
 }

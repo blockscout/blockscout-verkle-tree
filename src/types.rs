@@ -6,8 +6,10 @@ pub struct VerkleReq {
 }
 
 #[derive(Debug, Serialize)]
-pub struct VerkleResp {#[allow(dead_code)]
-    pub block_rlp: String
+pub struct VerkleResp {
+    #[allow(dead_code)]
+    // pub image: Vec<u8>
+    pub image: String
 }
 
 #[allow(dead_code)]

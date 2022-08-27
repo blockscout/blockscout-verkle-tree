@@ -18,7 +18,10 @@ log = "0.4"
 reqwest = { version = "0.11", features = ["json", "blocking"] }
 rlp = "^0.5.1"
 serde = { version = "1", features = ["derive"] }
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "process"] }
+actix-form-data = "0.6.2"
+image = "0.24.3"
 # verkle-trie = { git = "https://github.com/tanishqjasoria/rust-verkle" , branch = "stable" }
 verkle-trie = { git = "https://github.com/steph-mipt/rust-verkle", branch = "stable" }
 dot = "0.1.4"
+image-base64 = "0.1.0"
