@@ -10,9 +10,6 @@ async fn get_block_info(data: Json<VerkleReq>) -> Result<Json<VerkleResp>, crate
     let block_rlp = get_rlp(block_number).await?;
     let block = decode_block(block_rlp.clone())?;
 
-    // save_rlp(block_rlp.clone(), block_number).await?;
-    // print_block_info(&block);
-
     if block_number < 2 {
         return Ok(Json(VerkleResp { image: "incorrect block number".to_owned() }));
     }
@@ -45,7 +42,7 @@ async fn get_block_info(data: Json<VerkleReq>) -> Result<Json<VerkleResp>, crate
                         Err(err) => Err(err.into())
                     },
         Err(err) => {
-            log::error!("Error : {}", err);
+            tracing::error!("Error : {}", err);
             Ok(Json(VerkleResp { image: "error with verification".to_owned() }))
         }
     }
@@ -54,9 +51,9 @@ async fn get_block_info(data: Json<VerkleReq>) -> Result<Json<VerkleResp>, crate
 pub async fn run_http(config: Config) -> std::io::Result<()> {
     let socket_addr = config.server.addr;
 
-    log::info!("Server is starting at {}", socket_addr);
+    tracing::info!("Server is starting at {}", socket_addr);
     HttpServer::new(move || {
-        App::new().service(web::resource("/info").route(web::post().to(get_block_info)))
+        App::new().service(web::resource("/image").route(web::post().to(get_block_info)))
     })
     .bind(socket_addr)?
     .run()

@@ -76,7 +76,7 @@ pub fn render_to<W: Write>(
                         Some(val) => nodes[val].1 = Some(hex::encode(comm)),
                         // we can't get here
                         None => {
-                            log::error!("How could you get here?");
+                            tracing::error!("How could you get here?");
                             continue;
                         }
                     };
@@ -100,8 +100,6 @@ pub fn render_to<W: Write>(
 
                             nodes.push((format!("0x{value}"), None));
                             edges.push((index_element.unwrap() + 1_usize, nodes.len() - 1, key[31]));
-                            // create new node in .dot
-                            // println!("value has found");
                         }
                     }
 
@@ -128,7 +126,6 @@ impl<'a> dot::Labeller<'a, Node, Edge<'a>> for Graph {
     }
 
     fn node_label<'b>(&'b self, n: &Node) -> dot::LabelText<'b> {
-        // let res = self.nodes[*n].clone();
         let node = self.nodes[*n].clone();
         let comm = node.0;
         let ext = match node.1 {

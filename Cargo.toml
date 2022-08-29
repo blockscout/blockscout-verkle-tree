@@ -12,16 +12,15 @@ anyhow = "1.0"
 ark-serialize = "0.3.0"
 clap = { version = "3.1.6", features = ["derive"] }
 config = "0.13"
+dot = "0.1.4"
 env_logger = "0.9"
 hex = "0.4.3"
+image-base64 = "0.1.0"
 log = "0.4"
 reqwest = { version = "0.11", features = ["json", "blocking"] }
 rlp = "^0.5.1"
 serde = { version = "1", features = ["derive"] }
-tokio = { version = "1", features = ["macros", "rt-multi-thread", "process"] }
-actix-form-data = "0.6.2"
-image = "0.24.3"
-# verkle-trie = { git = "https://github.com/tanishqjasoria/rust-verkle" , branch = "stable" }
+tracing = "0.1.36"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "process", "fs"] }
+verkle-block-sample = { git = "https://github.com/gballet/verkle-block-sample" }
 verkle-trie = { git = "https://github.com/steph-mipt/rust-verkle", branch = "stable" }
-dot = "0.1.4"
-image-base64 = "0.1.0"

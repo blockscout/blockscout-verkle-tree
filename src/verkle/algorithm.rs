@@ -65,19 +65,19 @@ pub fn decode_block(rlp: String) -> Result<VerkleBlock, anyhow::Error> {
 
 // change to trace::
 #[allow(dead_code)]
-pub fn print_block_info(block: &VerkleBlock) {
-    println!(
+pub fn debug_block_info(block: &VerkleBlock) {
+    tracing::debug!(
             "Block info:\n- parent hash: {}\n- storage root: {}\n- block number: {}\n",
             hex::encode(block.header.parent_hash.clone()),
             hex::encode(block.header.storage_root.clone()),
             hex::encode(block.header.number.clone())
         );
     let keys = block.header.keyvals.keys.clone();
-    println!("Kkey-vals: ");
+    tracing::debug!("Kkey-vals: ");
     for (indx, key) in keys.iter().enumerate() {
         match block.header.keyvals.values[indx] {
-            Some(ref val) => println!("\t{} => {}", hex::encode(key), hex::encode(val)),
-            None => println!("\t{} is absent", hex::encode(key)),
+            Some(ref val) => tracing::debug!("\t{} => {}", hex::encode(key), hex::encode(val)),
+            None => tracing::debug!("\t{} is absent", hex::encode(key)),
         }
     }
 }
@@ -112,7 +112,7 @@ pub fn verification(block: VerkleBlock, parent_root: String) -> Result<verkle_tr
     match checked {
         true => {
             // change to trace::
-            log::info!("Good verification");
+            tracing::info!("Good verification of block 0x{}", hex::encode(block.header.number));
             match info {
                 Some(val) => Ok(val),
                 None => Err(anyhow::anyhow!("UpdateHint is none"))
@@ -120,14 +120,15 @@ pub fn verification(block: VerkleBlock, parent_root: String) -> Result<verkle_tr
         },
         false => {
             // change to trace::
-            log::error!("Bad verification");
+            tracing::error!("Bad verification");
             Err(anyhow::anyhow!("Verification didn't work out"))
         }
     }
 }
 
+// this function should use with tokio::task::spawn_blocking
 #[allow(dead_code)]
-pub async fn save_rlp(rlp: String, num: u64) -> Result<(), anyhow::Error> {
+pub fn save_rlp(rlp: String, num: u64) -> Result<(), anyhow::Error> {
     use std::fs::File;
     use std::io::prelude::*;
 
