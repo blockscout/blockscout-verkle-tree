@@ -63,7 +63,6 @@ pub fn decode_block(rlp: String) -> Result<VerkleBlock, anyhow::Error> {
     Ok(block)
 }
 
-// change to trace::
 #[allow(dead_code)]
 pub fn debug_block_info(block: &VerkleBlock) {
     tracing::debug!(
@@ -73,7 +72,7 @@ pub fn debug_block_info(block: &VerkleBlock) {
             hex::encode(block.header.number.clone())
         );
     let keys = block.header.keyvals.keys.clone();
-    tracing::debug!("Kkey-vals: ");
+    tracing::debug!("Key-vals: ");
     for (indx, key) in keys.iter().enumerate() {
         match block.header.keyvals.values[indx] {
             Some(ref val) => tracing::debug!("\t{} => {}", hex::encode(key), hex::encode(val)),
@@ -98,9 +97,8 @@ pub async fn get_rlp(block_number: u64) -> Result<String, reqwest::Error> {
     Ok(block_rlp.result)
 }
 
-pub fn verification(block: VerkleBlock, parent_root: String) -> Result<verkle_trie::proof::UpdateHint, anyhow::Error> {
-    let parent_root = hex::decode(parent_root)?;
-    let root: EdwardsProjective = CanonicalDeserialize::deserialize(&parent_root[..])?;
+pub fn verification(block: VerkleBlock, parent_root: &[u8]) -> Result<verkle_trie::proof::UpdateHint, anyhow::Error> {
+    let root: EdwardsProjective = CanonicalDeserialize::deserialize(parent_root)?;
     let keyvals = block.header.keyvals;
 
     let (checked, info) = block
@@ -111,7 +109,6 @@ pub fn verification(block: VerkleBlock, parent_root: String) -> Result<verkle_tr
 
     match checked {
         true => {
-            // change to trace::
             tracing::info!("Good verification of block 0x{}", hex::encode(block.header.number));
             match info {
                 Some(val) => Ok(val),
@@ -119,23 +116,8 @@ pub fn verification(block: VerkleBlock, parent_root: String) -> Result<verkle_tr
             }
         },
         false => {
-            // change to trace::
             tracing::error!("Bad verification");
             Err(anyhow::anyhow!("Verification didn't work out"))
         }
     }
-}
-
-// this function should use with tokio::task::spawn_blocking
-#[allow(dead_code)]
-pub fn save_rlp(rlp: String, num: u64) -> Result<(), anyhow::Error> {
-    use std::fs::File;
-    use std::io::prelude::*;
-
-    let mut file = File::create(format!("condrieu.block{}.rlp", num))?;
-    // catch panic?
-    let rlp_cropped = &rlp[2..];
-    file.write_all(&hex::decode(rlp_cropped)?)?;
-
-    Ok(())
 }

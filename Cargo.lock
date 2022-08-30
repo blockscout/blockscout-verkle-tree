@@ -2908,6 +2908,7 @@ dependencies = [
  "reqwest",
  "rlp",
  "serde",
+ "tempfile",
  "tokio",
  "tracing",
  "verkle-block-sample",

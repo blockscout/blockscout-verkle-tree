@@ -2,6 +2,7 @@ use verkle_trie::proof::UpdateHint;
 use ark_serialize::{CanonicalSerialize};
 use std::borrow::Cow;
 use std::io::Write;
+use std::path::PathBuf;
 
 type Node = usize;
 type Edge<'a> = &'a (usize, usize, u8);
@@ -10,9 +11,9 @@ struct Graph {
     edges: Vec<(usize,usize,u8)>
 }
 
-pub fn to_dot(uh: &UpdateHint, keyvals: &crate::verkle::KeyVals, filename: &str) -> Result<(), anyhow::Error> {
+pub fn to_dot(uh: &UpdateHint, keyvals: &crate::verkle::KeyVals, file_path: &PathBuf) -> Result<(), anyhow::Error> {
     use std::fs::File;
-    let mut f = File::create(filename)?;
+    let mut f = File::create(file_path)?;
 
     render_to(&mut f, uh, keyvals)
 }
