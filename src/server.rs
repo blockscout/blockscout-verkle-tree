@@ -13,7 +13,7 @@ async fn get_block_info(info: web::Path<VerkleReq>) -> Result<HttpResponse, crat
     let block = decode_block(block_rlp)?;
 
     if block_number < 2 {
-        return Ok(HttpResponse::build(StatusCode::from_u16(400)?)
+        return Ok(HttpResponse::build(StatusCode::BAD_REQUEST)
                 .content_type("text/html")
                 .body("Incorrect block_number"));
     }
@@ -47,6 +47,7 @@ async fn get_block_info(info: web::Path<VerkleReq>) -> Result<HttpResponse, crat
                             // web::block ?
                             let image_content =  web::Bytes::from(std::fs::read(&image_path)?);
 
+                            // should we drop files?
                             dir.close()?;
 
                             Ok(HttpResponse::build(StatusCode::OK)
@@ -58,7 +59,7 @@ async fn get_block_info(info: web::Path<VerkleReq>) -> Result<HttpResponse, crat
         Err(err) => {
             tracing::error!("Error : {}", err);
             
-            Ok(HttpResponse::build(StatusCode::from_u16(400)?)
+            Ok(HttpResponse::build(StatusCode::INTERNAL_SERVER_ERROR)
                 .content_type("text/html")
                 .body("Error while verification"))
         }
