@@ -1,5 +1,5 @@
 use crate::verkle::proof::Proof;
-use crate::verkle::keyvals::KeyVals;
+use block_verkle_proof_extractor::{keyvals::KeyVals};
 
 use reqwest::Client;
 use reqwest::header::{HeaderValue, HeaderMap, CONTENT_TYPE, USER_AGENT};

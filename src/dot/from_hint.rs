@@ -1,4 +1,5 @@
 use verkle_trie::proof::UpdateHint;
+use block_verkle_proof_extractor::{keyvals::KeyVals};
 use ark_serialize::{CanonicalSerialize};
 use std::borrow::Cow;
 use std::io::Write;
@@ -11,7 +12,7 @@ struct Graph {
     edges: Vec<(usize,usize,u8)>
 }
 
-pub fn to_dot(uh: &UpdateHint, keyvals: &crate::verkle::KeyVals, file_path: &PathBuf) -> Result<(), anyhow::Error> {
+pub fn to_dot(uh: &UpdateHint, keyvals: &KeyVals, file_path: &PathBuf) -> Result<(), anyhow::Error> {
     use std::fs::File;
     let mut f = File::create(file_path)?;
 
@@ -25,7 +26,7 @@ fn common_prefix(v1: &[u8], v2: &[u8]) -> usize {
 // We are transforming sorted Vec<paths, commitments> to the prefix-tree (dot)
 pub fn render_to<W: Write>(
                         output: &mut W, data: &UpdateHint,
-                        keyvals: &crate::verkle::KeyVals)-> Result<(), anyhow::Error> {
+                        keyvals: &KeyVals)-> Result<(), anyhow::Error> {
     let mut nodes = vec![];
     let mut previous_items = Vec::<(Vec::<u8>, String)>::new();
     let mut edges = vec![];

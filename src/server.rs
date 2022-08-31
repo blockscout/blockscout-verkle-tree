@@ -22,7 +22,10 @@ async fn get_block_info(info: web::Path<VerkleReq>) -> Result<HttpResponse, crat
     let previous_block = decode_block(previous_block_rlp)?;
 
     let parent_root = previous_block.header.storage_root;
-    let keyvals = block.header.keyvals.clone();
+    let keyvals = block_verkle_proof_extractor::keyvals::KeyVals {
+                    keys: block.header.keyvals.keys.clone(),
+                    values: block.header.keyvals.values.clone()
+                };
 
     let dir = tempdir()?;
     let file_path = dir.path().join("tmp.dot");
