@@ -1,10 +1,12 @@
 use crate::verkle::proof::Proof;
-use block_verkle_proof_extractor::{keyvals::KeyVals};
+use block_verkle_proof_extractor::keyvals::KeyVals;
 
-use reqwest::Client;
-use reqwest::header::{HeaderValue, HeaderMap, CONTENT_TYPE, USER_AGENT};
-use rlp::{decode, Decodable, DecoderError, Rlp};
 use crate::types::RPCResp;
+use reqwest::{
+    header::{HeaderMap, HeaderValue, CONTENT_TYPE, USER_AGENT},
+    Client,
+};
+use rlp::{decode, Decodable, DecoderError, Rlp};
 
 use verkle_trie::EdwardsProjective;
 
@@ -48,8 +50,14 @@ impl Decodable for VerkleBlock {
 
 fn construct_headers() -> HeaderMap {
     let mut headers = HeaderMap::new();
-    headers.insert(USER_AGENT, HeaderValue::from_static("test optimal batch size1"));
-    headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json; charset=utf-8"));
+    headers.insert(
+        USER_AGENT,
+        HeaderValue::from_static("test optimal batch size1"),
+    );
+    headers.insert(
+        CONTENT_TYPE,
+        HeaderValue::from_static("application/json; charset=utf-8"),
+    );
     headers
 }
 
@@ -66,11 +74,11 @@ pub fn decode_block(rlp: String) -> Result<VerkleBlock, anyhow::Error> {
 #[allow(dead_code)]
 pub fn debug_block_info(block: &VerkleBlock) {
     tracing::debug!(
-            "Block info:\n- parent hash: {}\n- storage root: {}\n- block number: {}\n",
-            hex::encode(block.header.parent_hash.clone()),
-            hex::encode(block.header.storage_root.clone()),
-            hex::encode(block.header.number.clone())
-        );
+        "Block info:\n- parent hash: {}\n- storage root: {}\n- block number: {}\n",
+        hex::encode(block.header.parent_hash.clone()),
+        hex::encode(block.header.storage_root.clone()),
+        hex::encode(block.header.number.clone())
+    );
     let keys = block.header.keyvals.keys.clone();
     tracing::debug!("Key-vals: ");
     for (indx, key) in keys.iter().enumerate() {
@@ -84,9 +92,13 @@ pub fn debug_block_info(block: &VerkleBlock) {
 pub async fn get_rlp(block_number: u64) -> Result<String, reqwest::Error> {
     let client = Client::new();
     let node_end_point: String = "https://rpc.condrieu.ethdevops.io/".to_owned();
-    let arg = format!(r#"{{"jsonrpc":"2.0","method":"debug_getBlockRlp","params":[{}],"id":"1"}}"#, block_number);
+    let arg = format!(
+        r#"{{"jsonrpc":"2.0","method":"debug_getBlockRlp","params":[{}],"id":"1"}}"#,
+        block_number
+    );
 
-    let res = client.post(&node_end_point)
+    let res = client
+        .post(&node_end_point)
         .body(arg)
         .headers(construct_headers())
         .send()
@@ -97,7 +109,10 @@ pub async fn get_rlp(block_number: u64) -> Result<String, reqwest::Error> {
     Ok(block_rlp.result)
 }
 
-pub fn verification(block: VerkleBlock, parent_root: &[u8]) -> Result<verkle_trie::proof::UpdateHint, anyhow::Error> {
+pub fn verification(
+    block: VerkleBlock,
+    parent_root: &[u8],
+) -> Result<verkle_trie::proof::UpdateHint, anyhow::Error> {
     let root: EdwardsProjective = CanonicalDeserialize::deserialize(parent_root)?;
     let keyvals = block.header.keyvals;
 
@@ -109,12 +124,15 @@ pub fn verification(block: VerkleBlock, parent_root: &[u8]) -> Result<verkle_tri
 
     match checked {
         true => {
-            tracing::info!("Good verification of block 0x{}", hex::encode(block.header.number));
+            tracing::info!(
+                "Good verification of block 0x{}",
+                hex::encode(block.header.number)
+            );
             match info {
                 Some(val) => Ok(val),
-                None => Err(anyhow::anyhow!("UpdateHint is none"))
+                None => Err(anyhow::anyhow!("UpdateHint is none")),
             }
-        },
+        }
         false => {
             tracing::error!("Bad verification");
             Err(anyhow::anyhow!("Verification didn't work out"))

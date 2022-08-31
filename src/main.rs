@@ -1,4 +1,4 @@
-use verkle_tree_img::{Config, Args, run};
+use verkle_tree_img::{run, Args, Config};
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {

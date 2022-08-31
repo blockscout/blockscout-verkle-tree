@@ -1,18 +1,20 @@
+use ark_serialize::CanonicalSerialize;
+use block_verkle_proof_extractor::keyvals::KeyVals;
+use std::{borrow::Cow, io::Write, path::PathBuf};
 use verkle_trie::proof::UpdateHint;
-use block_verkle_proof_extractor::{keyvals::KeyVals};
-use ark_serialize::{CanonicalSerialize};
-use std::borrow::Cow;
-use std::io::Write;
-use std::path::PathBuf;
 
 type Node = usize;
 type Edge<'a> = &'a (usize, usize, u8);
 struct Graph {
     nodes: Vec<(String, Option<String>)>,
-    edges: Vec<(usize,usize,u8)>
+    edges: Vec<(usize, usize, u8)>,
 }
 
-pub fn to_dot(uh: &UpdateHint, keyvals: &KeyVals, file_path: &PathBuf) -> Result<(), anyhow::Error> {
+pub fn to_dot(
+    uh: &UpdateHint,
+    keyvals: &KeyVals,
+    file_path: &PathBuf,
+) -> Result<(), anyhow::Error> {
     use std::fs::File;
     let mut f = File::create(file_path)?;
 
@@ -25,10 +27,12 @@ fn common_prefix(v1: &[u8], v2: &[u8]) -> usize {
 
 // We are transforming sorted Vec<paths, commitments> to the prefix-tree (dot)
 pub fn render_to<W: Write>(
-                        output: &mut W, data: &UpdateHint,
-                        keyvals: &KeyVals)-> Result<(), anyhow::Error> {
+    output: &mut W,
+    data: &UpdateHint,
+    keyvals: &KeyVals,
+) -> Result<(), anyhow::Error> {
     let mut nodes = vec![];
-    let mut previous_items = Vec::<(Vec::<u8>, String)>::new();
+    let mut previous_items = Vec::<(Vec<u8>, String)>::new();
     let mut edges = vec![];
 
     for (my_index, (path, comm)) in data.commitments_by_path.iter().enumerate() {
@@ -70,10 +74,8 @@ pub fn render_to<W: Write>(
 
                 if common == val2.1 as usize {
                     // find element in nodes and update it
-                    let index_element = nodes
-                        .iter()
-                        .position(|x| x.0 == item.1);
-                    
+                    let index_element = nodes.iter().position(|x| x.0 == item.1);
+
                     match index_element {
                         Some(val) => nodes[val].1 = Some(hex::encode(comm)),
                         // we can't get here
@@ -101,10 +103,13 @@ pub fn render_to<W: Write>(
                             }
 
                             nodes.push((format!("0x{value}"), None));
-                            edges.push((index_element.unwrap() + 1_usize, nodes.len() - 1, key[31]));
+                            edges.push((
+                                index_element.unwrap() + 1_usize,
+                                nodes.len() - 1,
+                                key[31],
+                            ));
                         }
                     }
-
                 }
             }
         }
@@ -114,7 +119,7 @@ pub fn render_to<W: Write>(
 
     match dot::render(&graph, output) {
         Ok(()) => Ok(()),
-        Err(err) => Err(anyhow::anyhow!("Error with render dot {err}"))
+        Err(err) => Err(anyhow::anyhow!("Error with render dot {err}")),
     }
 }
 
@@ -131,19 +136,18 @@ impl<'a> dot::Labeller<'a, Node, Edge<'a>> for Graph {
         let node = self.nodes[*n].clone();
         let comm = node.0;
         let ext = match node.1 {
-            Some(val) => format!("\next: 0x{}",val),
-            None => "".to_owned()
+            Some(val) => format!("\next: 0x{}", val),
+            None => "".to_owned(),
         };
 
-        dot::LabelText::LabelStr(
-            Cow::Owned(format!("{comm}{ext}")))
+        dot::LabelText::LabelStr(Cow::Owned(format!("{comm}{ext}")))
     }
 
     fn edge_label<'b>(&'b self, edge: &Edge) -> dot::LabelText<'b> {
         let symbol = match edge.2 {
             1 => "c_1".to_owned(),
             2 => "c_2".to_owned(),
-            _ => format!("{:0x}", edge.2)
+            _ => format!("{:0x}", edge.2),
         };
 
         dot::LabelText::LabelStr(Cow::Owned(symbol))
@@ -151,11 +155,11 @@ impl<'a> dot::Labeller<'a, Node, Edge<'a>> for Graph {
 }
 
 impl<'a> dot::GraphWalk<'a, Node, Edge<'a>> for Graph {
-    fn nodes(&self) -> dot::Nodes<'a,Node> {
+    fn nodes(&self) -> dot::Nodes<'a, Node> {
         (0..self.nodes.len()).collect()
     }
 
-    fn edges(&'a self) -> dot::Edges<'a,Edge<'a>> {
+    fn edges(&'a self) -> dot::Edges<'a, Edge<'a>> {
         self.edges.iter().collect()
     }
 

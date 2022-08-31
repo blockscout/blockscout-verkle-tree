@@ -3,4 +3,4 @@ mod proof;
 // mod keyvals;
 
 // pub(crate) use keyvals::KeyVals;
-pub(crate) use algorithm::{get_rlp, decode_block, verification};
+pub(crate) use algorithm::{decode_block, get_rlp, verification};

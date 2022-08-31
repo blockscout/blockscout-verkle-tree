@@ -2,14 +2,14 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct VerkleReq {
-    pub block_number: u64
+    pub block_number: u64,
 }
 
 #[derive(Debug, Serialize)]
 pub struct VerkleResp {
     #[allow(dead_code)]
     // pub image: Vec<u8>
-    pub image: String
+    pub image: String,
 }
 
 #[allow(dead_code)]

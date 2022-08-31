@@ -1,7 +1,6 @@
 use config::{Config as LibConfig, File};
-use serde::{Deserialize};
-use std::{net::SocketAddr, str::FromStr, path::PathBuf};
-
+use serde::Deserialize;
+use std::{net::SocketAddr, path::PathBuf, str::FromStr};
 
 #[derive(Deserialize, Clone, Default)]
 #[serde(default)]
