@@ -1,5 +1,13 @@
 # blockscout-verkle-tree
 Module for visualizing Verkle tree proofs
+
+## Usage
+```
+cargo run --release
+```  
+Service contains only one route:
+**GET** `/blocks/{block_number}`
+- Service send a svg-image of verkle tree by `block_number` in **condriua** test-net
 ## Theory
 Verkle trie is quite similar to **Modified Merkle Patricia Trie**. To understand how this data structure works, let's look at each modification separately.
 #### Merkle Tree
