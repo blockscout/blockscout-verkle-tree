@@ -22,6 +22,11 @@ async fn get_block_info(info: web::Path<VerkleReq>) -> Result<HttpResponse, crat
     let previous_block_rlp = get_rlp(block_number - 1).await?;
     let previous_block = decode_block(previous_block_rlp)?;
 
+    // println!("current_hash: {}", hex::encode(&block.header.parent_hash));
+    // println!("current_root: {}", hex::encode(&block.header.storage_root));
+    // println!("parent_hash: {}", hex::encode(&previous_block.header.parent_hash));
+    // println!("parent_root: {}", hex::encode(&previous_block.header.storage_root));
+    
     let parent_root = previous_block.header.storage_root;
     let keyvals = block_verkle_proof_extractor::keyvals::KeyVals {
         keys: block.header.keyvals.keys.clone(),

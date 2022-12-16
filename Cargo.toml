@@ -23,5 +23,5 @@ serde = { version = "1", features = ["derive"] }
 tracing = "0.1.36"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "process", "fs"] }
 tempfile = "3.3.0"
-verkle-trie = { git = "https://github.com/steph-mipt/rust-verkle", branch = "stable" }
+verkle-trie = { git = "https://github.com/rimrakhimov/rust-verkle" }
 verkle-block-sample = { git = "https://github.com/gballet/verkle-block-sample" }

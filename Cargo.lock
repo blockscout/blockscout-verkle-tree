@@ -1297,25 +1297,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ipa-multipoint"
-version = "0.1.0"
-source = "git+https://github.com/crate-crypto/ipa_multipoint?branch=develop#d5590ef5223f18b3760964fc24768520d833994e"
-dependencies = [
- "ark-ec",
- "ark-ff",
- "ark-poly",
- "ark-serialize",
- "ark-std",
- "bandersnatch",
- "criterion",
- "hex",
- "itertools",
- "rand 0.6.5",
- "rand_chacha 0.3.1",
- "sha2",
-]
-
-[[package]]
 name = "ipnet"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2801,33 +2782,12 @@ dependencies = [
 [[package]]
 name = "verkle-db"
 version = "0.1.0"
-source = "git+https://github.com/steph-mipt/rust-verkle?branch=stable#63f064cfeadcac477d7ebbb7b498d385adf5d8db"
+source = "git+https://github.com/crate-crypto/rust-verkle#e31712b7293e620e36db527b3308d07ba4666471"
 
 [[package]]
 name = "verkle-db"
 version = "0.1.0"
-source = "git+https://github.com/crate-crypto/rust-verkle#e31712b7293e620e36db527b3308d07ba4666471"
-
-[[package]]
-name = "verkle-trie"
-version = "0.1.0"
-source = "git+https://github.com/steph-mipt/rust-verkle?branch=stable#63f064cfeadcac477d7ebbb7b498d385adf5d8db"
-dependencies = [
- "ark-ec",
- "ark-ff",
- "ark-serialize",
- "ark-std",
- "bandersnatch",
- "hex",
- "ipa-multipoint 0.1.0 (git+https://github.com/crate-crypto/ipa_multipoint?branch=develop)",
- "itertools",
- "once_cell",
- "rand_chacha 0.3.1",
- "rayon",
- "sha2",
- "smallvec",
- "verkle-db 0.1.0 (git+https://github.com/steph-mipt/rust-verkle?branch=stable)",
-]
+source = "git+https://github.com/rimrakhimov/rust-verkle#eb18b70597a2280163fe25a695c7dacb6b5be331"
 
 [[package]]
 name = "verkle-trie"
@@ -2840,7 +2800,7 @@ dependencies = [
  "ark-std",
  "banderwagon",
  "hex",
- "ipa-multipoint 0.1.0 (git+https://github.com/crate-crypto/ipa_multipoint?branch=banderwagon_migration)",
+ "ipa-multipoint",
  "itertools",
  "once_cell",
  "rand_chacha 0.3.1",
@@ -2849,6 +2809,28 @@ dependencies = [
  "smallvec",
  "tempfile",
  "verkle-db 0.1.0 (git+https://github.com/crate-crypto/rust-verkle)",
+]
+
+[[package]]
+name = "verkle-trie"
+version = "0.1.0"
+source = "git+https://github.com/rimrakhimov/rust-verkle#eb18b70597a2280163fe25a695c7dacb6b5be331"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-serialize",
+ "ark-std",
+ "banderwagon",
+ "hex",
+ "ipa-multipoint",
+ "itertools",
+ "once_cell",
+ "rand_chacha 0.3.1",
+ "rayon",
+ "sha2",
+ "smallvec",
+ "tempfile",
+ "verkle-db 0.1.0 (git+https://github.com/rimrakhimov/rust-verkle)",
 ]
 
 [[package]]
@@ -2872,7 +2854,7 @@ dependencies = [
  "tokio",
  "tracing",
  "verkle-block-sample",
- "verkle-trie 0.1.0 (git+https://github.com/steph-mipt/rust-verkle?branch=stable)",
+ "verkle-trie 0.1.0 (git+https://github.com/rimrakhimov/rust-verkle)",
 ]
 
 [[package]]
